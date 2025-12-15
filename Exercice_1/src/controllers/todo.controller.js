@@ -5,7 +5,9 @@ const service = require('../services/todo.service.js')
  * 
  */
 exports.getAllTodos = (req, res) => {
-    return service.todoService.getTodoList()   
+    console.log(
+        service.todoService.getTodoList()   
+    );
 }
 
 /**
@@ -13,5 +15,4 @@ exports.getAllTodos = (req, res) => {
  */
 exports.createTodo = (req,res) => {
     console.log(req);
-    
 }
