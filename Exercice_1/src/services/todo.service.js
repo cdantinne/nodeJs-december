@@ -1,13 +1,17 @@
-let todoModel = require('../models/todo.model.js')   
-let model = todoModel.todoModel     
+const todoModel = require('../models/todo.model.js')   
+const model = todoModel.todoModel     
+const asyncHandler = require('../utils/asyncHandler.js').asyncHandler
 
 
 class TodoService {
 
     static getTodoList() {
-        console.log(
-         model.findAll()
-        )
+
+       return new Promise((resolve)=>{
+                resolve(model.findAll())
+            })
+       
+            
     }
 
     // Todo doit être sous la forme {title : String, completed : Boolean}

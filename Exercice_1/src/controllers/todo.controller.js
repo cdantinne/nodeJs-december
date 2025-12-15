@@ -1,13 +1,17 @@
 const service = require('../services/todo.service.js')
+const asyncHandler = require('../utils/asyncHandler.js').asyncHandler
 
 
 /**
  * 
  */
-exports.getAllTodos = (req, res) => {
-    console.log(
-        service.todoService.getTodoList()   
-    );
+exports.getAllTodos = async (req, res) => {
+    try {
+        const todos = await service.todoService.getTodoList()
+        res.json(todos)
+    } catch (error) {
+        res.status(500)
+    }
 }
 
 /**
