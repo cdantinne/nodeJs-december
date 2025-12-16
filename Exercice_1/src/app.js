@@ -1,13 +1,17 @@
 const express = require('express')
 const app = express()
-const ApiError = require('./errors/ApiError.js')
-const NotFoundError = ApiError.NotFoundError
+const ApiError = require('./errors/ApiError')
 
-app.use('/api/todos', require('./routes/routes.js'))
+app.use(express.json())
 
-app.use('', ()=>{
-    const error = NotFoundError('Route introuvable')
-    next(error)
+app.use('/api', require('./routes/routes'))
+
+// 404
+app.use((req, res, next) => {
+    next(ApiError.NotFoundError('Route introuvable'))
 })
 
-app.use('next', require('./errors/errorHandler.js'))
+// error handler
+app.use(require('./errors/errorHandler'))
+
+module.exports = app

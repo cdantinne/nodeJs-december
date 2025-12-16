@@ -1,51 +1,16 @@
 class ApiError extends Error {
-    constructor(statusCode, message) {
+    constructor(message, statusCode) {
         super(message)
-        statusCode = statusCode(),
-        message = message,
-        statut = (statusCode)=> {
-            let allNumbers = statusCode.split("")
-        switch (allNumbers[0]) {
-            case 1 || "1" :
-                return ""
-                break;
-            case 3 || "3":
-                return ""
-
-                break;
-            case 4 || "4":
-                return "Fail"
-
-                break;
-            case 5 || "5":
-                return "Error"
-                
-                break;
-            default:
-                return "Unknow error"
-
-                break;
-        }
-    }
+        this.statusCode = statusCode
     }
 
-    
-}
+    static NotFoundError(message = 'Not found') {
+        return new ApiError(message, 404)
+    }
 
-class NotFoundError extends ApiError {
-    constructor(message) {
-        super("404", message)
+    static BadRequestError(message = 'Bad request') {
+        return new ApiError(message, 400)
     }
 }
 
-class ValidationError extends ApiError {
-    constructor(message) {
-        super("400", message)
-    }
-}
-
-module.exports={
-    ApiError,
-    NotFoundError,
-    ValidationError
-}
+module.exports = ApiError
