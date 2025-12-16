@@ -1,40 +1,36 @@
-const todoModel = require('../models/todo.model.js')   
-const model = todoModel.todoModel     
-const asyncHandler = require('../utils/asyncHandler.js').asyncHandler
 const ApiError = require('../errors/ApiError.js')
 const NotFoundError = ApiError.NotFoundError
 const ValidationError = ApiError.ValidationError
-
+const AppDataSource = require('../config/data-source.js')
 
 class TodoService {
-
-    static getTodoList() {
-
-       return new Promise((resolve,reject)=>{
-        if (model.findAll() != []) {
-           resolve(model.findAll())
-        } else {
-            reject(NotFoundError(
-                {message:"Aucune donnée trouvée",
-                    statusCode: 400}
-            ))
-        }
-                
-            })
-       
-            
+    constructor() {
+        this.todoRepository = AppDataSource.getRepository('Todo')
+        this.userRepository = AppDataSource.getRepository('User')
+        this.tagRepository = AppDataSource.getRepository('Tag')
     }
 
-    // Todo doit être sous la forme {title : String, completed : Boolean}
-    // L'ID s'incrémente tout seul
-    static CreateTodo(todo) {
-        if (todo.title != undefined) {
-            return model.create(todo)
+    static async getTodoList() {
+       return await this.todoRepository.find()
+    }
+
+    static async CreateTodo(data, userId, tags) {
+        if (data.title != undefined) {
+            let user = this.userRepository.findOneBy({ userId })
+            let allTags = this.tagRepository.findBy(tags)
+            if (user == undefined) {
+                throw new NotFoundError('User not found')
+            }
+            const todo = this.todoRepository.create({
+                title: data,
+                completed: false,
+                user: user,
+                tags: allTags || []
+            })
+            return await this.todoRepository.save(todo)
+            // return model.create(todo)
         } else {
-            throw new ValidationError(
-                {message:"Un titre est nécessaire",
-                    statusCode: "400"}
-            )
+            throw new ValidationError("A title is necessary")
         }
     }
 
@@ -42,7 +38,7 @@ class TodoService {
 }
 
 module.exports={
-    todoService:TodoService
+    TodoService
 }
 
 

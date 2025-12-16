@@ -17,4 +17,12 @@ module.exports = new EntitySchema({
             unique: true // Impossible d'avoir 2 fois le même email 
         } 
     }, 
+    relations:{
+        todos:{
+            type:"one-to-many",
+            target:"Todo",
+            inverseSide:"user",
+            cascade:true
+        }
+    }
 }); 

@@ -4,13 +4,22 @@ class ApiError extends Error {
         this.statusCode = statusCode
     }
 
-    static NotFoundError(message = 'Not found') {
-        return new ApiError(message, 404)
-    }
+}
 
-    static BadRequestError(message = 'Bad request') {
-        return new ApiError(message, 400)
+class NotFoundError extends ApiError {
+    constructor(message) {
+        super("404", message)
     }
 }
 
-module.exports = ApiError
+class ValidationError extends ApiError {
+    constructor(message) {
+        super("400", message)
+    }
+}
+
+module.exports={
+    ApiError,
+    NotFoundError,
+    ValidationError
+}
