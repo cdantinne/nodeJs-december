@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const todoController = require('../controllers/todo.controller.js')
 const userController = require('../controllers/user.controller.js')
+const passport = require('passport')           
+require('../config/passport.js')(passport) 
 
 
 router.get('/todos', todoController.getAllTodos)

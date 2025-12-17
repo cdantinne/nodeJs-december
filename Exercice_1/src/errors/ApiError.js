@@ -1,5 +1,5 @@
 class ApiError extends Error {
-    constructor(message, statusCode) {
+    constructor(statusCode, message) {
         super(message)
         this.statusCode = statusCode
     }
@@ -8,13 +8,13 @@ class ApiError extends Error {
 
 class NotFoundError extends ApiError {
     constructor(message) {
-        super("404", message)
+        super(404, message)
     }
 }
 
 class ValidationError extends ApiError {
     constructor(message) {
-        super("400", message)
+        super(400, message)
     }
 }
 
